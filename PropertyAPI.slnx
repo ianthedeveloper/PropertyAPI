@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BusinessLogic/BusinessLogic.csproj" />
+  <Project Path="DataModels/DataModels.csproj" />
+  <Project Path="PropertyAPI/PropertyAPI.csproj" />
+</Solution>
