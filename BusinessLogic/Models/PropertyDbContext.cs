@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
+namespace BusinessLogic.Models;
+
+public partial class PropertyDbContext : DbContext
+{
+    public PropertyDbContext()
+    {
+    }
+
+    public PropertyDbContext(DbContextOptions<PropertyDbContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<Client> Clients { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=propertyDb;Trusted_Connection=True;TrustServerCertificate=True;");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Client>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Table_1");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Admindate)
+                .HasColumnType("datetime")
+                .HasColumnName("admindate");
+            entity.Property(e => e.Clientname)
+                .HasMaxLength(70)
+                .IsUnicode(false)
+                .HasColumnName("clientname");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("email");
+            entity.Property(e => e.Phonenumber)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("phonenumber");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
